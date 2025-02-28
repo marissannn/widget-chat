@@ -12,7 +12,8 @@
   }
 
   // Conectar a WebSocket de Twitch (IRC)
-  const ws = new WebSocket("wss://irc-ws.chat.twitch.tv");
+const ws = new WebSocket("wss://irc.chat.twitch.tv:443");
+
 
   // Evento cuando la conexión está abierta
   ws.onopen = () => {
