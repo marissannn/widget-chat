@@ -12,11 +12,11 @@
   }
 
   // Conectar a WebSocket de Twitch (IRC)
-  const ws = new WebSocket("https://www.twitch.tv/popout/marissan__/chat");
+  const ws = new WebSocket("wss://irc-ws.chat.twitch.tv");
 
   // Evento cuando la conexión está abierta
   ws.onopen = () => {
-    // Enviar el OAuth Token y unirse al canal
+    console.log("Conexión establecida con el chat de Twitch.");  // Aquí se confirma la conexión
     ws.send("PASS oauth:sajxncx1ku90smi0qcul6iapyhwztr");  // Tu OAuth Token
     ws.send("NICK marissan__");  // Tu nombre de usuario
     ws.send("JOIN #Marissan__");  // Nombre de tu canal
@@ -24,6 +24,7 @@
 
   // Evento cuando se recibe un mensaje
   ws.onmessage = (event) => {
+    console.log("Mensaje recibido:", event.data);  // Aquí se muestra el mensaje recibido
     let message = event.data;
 
     // Expresión regular para extraer el nombre de usuario y el mensaje
@@ -31,6 +32,16 @@
     if (match) {
       addMessage(match[1], match[2]);  // Muestra el mensaje en el chatbox
     }
+  };
+
+  // Si hay algún error en la conexión
+  ws.onerror = (error) => {
+    console.error("Error en WebSocket:", error);  // Aquí se muestra el error
+  };
+
+  // Si la conexión se cierra
+  ws.onclose = () => {
+    console.log("Conexión cerrada.");  // Aquí se muestra cuando la conexión se cierre
   };
 </script>
 
@@ -44,5 +55,7 @@
     padding: 10px;
     overflow-y: auto;
     border-radius: 10px;
+    border: 1px solid white;  /* Asegúrate de que el borde esté visible */
+    margin-top: 20px; /* Para darle algo de espacio */
   }
 </style>
