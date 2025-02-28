@@ -3,10 +3,10 @@
 <script>
   const chatbox = document.getElementById("chatbox");
   const API_KEY = "sajxncx1ku90smi0qcul6iapyhwztr";
-  const LIVE_CHAT_ID = "https://www.twitch.tv/popout/marissan__/chat";
+  const LIVE_CHAT_ID = "gp762nuuoqcoxypju8c569th9wz7q5";
 
   async function getChatMessages() {
-    let url = `https://www.googleapis.com/youtube/v3/liveChat/messages?liveChatId=${LIVE_CHAT_ID}&part=snippet,authorDetails&key=${API_KEY}`;
+    let url = `https://www.twitch.tv/popout/marissan__/chatliveChatId=${LIVE_CHAT_ID}&part=snippet,authorDetails&key=${API_KEY}`;
     let response = await fetch(url);
     let data = await response.json();
     
