@@ -2,23 +2,8 @@
 
 <script>
   const chatbox = document.getElementById("chatbox");
-  const API_KEY = "sajxncx1ku90smi0qcul6iapyhwztr";
-  const LIVE_CHAT_ID = "gp762nuuoqcoxypju8c569th9wz7q5";
 
-  async function getChatMessages() {
-    let url = `https://www.twitch.tv/popout/marissan__/chatliveChatId=${LIVE_CHAT_ID}&part=snippet,authorDetails&key=${API_KEY}`;
-    let response = await fetch(url);
-    let data = await response.json();
-    
-    if (data.items) {
-      data.items.forEach(msg => {
-        let username = msg.authorDetails.displayName;
-        let message = msg.snippet.displayMessage;
-        addMessage(username, message);
-      });
-    }
-  }
-
+  // Función para agregar los mensajes al chatbox
   function addMessage(username, message) {
     let msgElement = document.createElement("p");
     msgElement.innerHTML = `<strong>${username}:</strong> ${message}`;
@@ -26,7 +11,27 @@
     chatbox.scrollTop = chatbox.scrollHeight;
   }
 
-  setInterval(getChatMessages, 5000); // Obtiene mensajes cada 5 segundos
+  // Conectar a WebSocket de Twitch (IRC)
+  const ws = new WebSocket("wss://irc-ws.chat.twitch.tv");
+
+  // Evento cuando la conexión está abierta
+  ws.onopen = () => {
+    // Enviar el OAuth Token y unirse al canal
+    ws.send("PASS oauth:sajxncx1ku90smi0qcul6iapyhwztr");  // Tu OAuth Token
+    ws.send("NICK marissan__");  // Tu nombre de usuario
+    ws.send("JOIN #Marissan__");  // Nombre de tu canal
+  };
+
+  // Evento cuando se recibe un mensaje
+  ws.onmessage = (event) => {
+    let message = event.data;
+
+    // Expresión regular para extraer el nombre de usuario y el mensaje
+    let match = message.match(/:(\w+)!\w+@\w+\.tmi\.twitch\.tv PRIVMSG #\w+ :(.*)/);
+    if (match) {
+      addMessage(match[1], match[2]);  // Muestra el mensaje en el chatbox
+    }
+  };
 </script>
 
 <style>
