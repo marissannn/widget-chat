@@ -1,0 +1,28 @@
+<div id="chatbox"></div>
+<script>
+  const chatbox = document.getElementById("chatbox");
+
+  function addMessage(username, message) {
+    let msgElement = document.createElement("p");
+    msgElement.innerHTML = `<strong>${username}:</strong> ${message}`;
+    chatbox.appendChild(msgElement);
+    chatbox.scrollTop = chatbox.scrollHeight;
+  }
+
+  // Simulación de mensajes
+  setInterval(() => {
+    addMessage("UsuarioRandom", "¡Hola, esto es un mensaje!");
+  }, 3000);
+</script>
+<style>
+  #chatbox {
+    width: 300px;
+    height: 500px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    font-size: 14px;
+    padding: 10px;
+    overflow-y: auto;
+    border-radius: 10px;
+  }
+</style>
