@@ -5,9 +5,25 @@
 
   // Función para agregar los mensajes al chatbox
   function addMessage(username, message) {
-    let msgElement = document.createElement("p");
-    msgElement.innerHTML = `<strong>${username}:</strong> ${message}`;
-    chatbox.appendChild(msgElement);
+    let msgContainer = document.createElement("div");
+    msgContainer.classList.add("message-container");
+
+    let usernameBox = document.createElement("div");
+    usernameBox.classList.add("username-box");
+    usernameBox.textContent = username;
+
+    let messageBox = document.createElement("div");
+    messageBox.classList.add("message-box");
+    messageBox.textContent = message;
+
+    msgContainer.appendChild(usernameBox);
+    msgContainer.appendChild(messageBox);
+    chatbox.appendChild(msgContainer);
+
+    // Animación de aparición
+    msgContainer.style.animation = "fadeIn 0.5s ease-in-out";
+
+    // Auto-scroll
     chatbox.scrollTop = chatbox.scrollHeight;
   }
 
@@ -16,7 +32,7 @@
 
   // Evento cuando la conexión está abierta
   ws.onopen = () => {
-    console.log("Conexión establecida con el chat de Twitch.");  // Aquí se confirma la conexión
+    console.log("Conexión establecida con el chat de Twitch.");
     ws.send("PASS oauth:sajxncx1ku90smi0qcul6iapyhwztr");  // Tu OAuth Token
     ws.send("NICK marissan__");  // Tu nombre de usuario
     ws.send("JOIN #Marissan__");  // Nombre de tu canal
@@ -24,39 +40,45 @@
 
   // Evento cuando se recibe un mensaje
   ws.onmessage = (event) => {
-    console.log("Mensaje recibido:", event.data);  // Aquí se muestra el mensaje recibido
+    console.log("Mensaje recibido:", event.data);
     let message = event.data;
 
     // Expresión regular para extraer el nombre de usuario y el mensaje
     let match = message.match(/:(\w+)!\w+@\w+\.tmi\.twitch\.tv PRIVMSG #\w+ :(.*)/);
     if (match) {
-      addMessage(match[1], match[2]);  // Muestra el mensaje en el chatbox
+      addMessage(match[1], match[2]);
     }
   };
 
   // Si hay algún error en la conexión
   ws.onerror = (error) => {
-    console.error("Error en WebSocket:", error);  // Aquí se muestra el error
-    alert('Error en la conexión WebSocket: ' + error);  // Muestra un mensaje de alerta con el error
+    console.error("Error en WebSocket:", error);
+    alert('Error en la conexión WebSocket: ' + error);
   };
 
   // Si la conexión se cierra
   ws.onclose = () => {
-    console.log("Conexión cerrada.");  // Aquí se muestra cuando la conexión se cierre
+    console.log("Conexión cerrada.");
   };
 </script>
 
 <style>
   #chatbox {
-    width: 300px;
+    width: 350px;
     height: 500px;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.7);
     color: white;
     font-size: 14px;
     padding: 10px;
     overflow-y: auto;
     border-radius: 10px;
-    border: 1px solid white;  /* Asegúrate de que el borde esté visible */
-    margin-top: 20px; /* Para darle algo de espacio */
+    border: 1px solid white;
+    margin-top: 20px;
   }
-</style>
+
+  /* Contenedor principal del mensaje */
+  .message-container {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.5);
+  
