@@ -39,8 +39,11 @@
   };
 
   // Evento cuando se recibe un mensaje
-  ws.onmessage = (event) => {
-    console.log("Mensaje recibido:", event.data);
+  // Evento cuando se recibe un mensaje
+ws.onmessage = (event) => {
+  console.log("Mensaje recibido en crudo:", event.data); // Esto mostrará los datos completos del mensaje recibido
+};
+
     let message = event.data;
 
     // Expresión regular para extraer el nombre de usuario y el mensaje
@@ -48,6 +51,7 @@
     if (match) {
       addMessage(match[1], match[2]);
     }
+    
   };
 
   // Si hay algún error en la conexión
