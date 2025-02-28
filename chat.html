@@ -12,8 +12,7 @@
   }
 
   // Conectar a WebSocket de Twitch (IRC)
-const ws = new WebSocket("wss://irc.chat.twitch.tv:443");
-
+  const ws = new WebSocket("wss://irc.chat.twitch.tv:443");
 
   // Evento cuando la conexión está abierta
   ws.onopen = () => {
@@ -38,6 +37,7 @@ const ws = new WebSocket("wss://irc.chat.twitch.tv:443");
   // Si hay algún error en la conexión
   ws.onerror = (error) => {
     console.error("Error en WebSocket:", error);  // Aquí se muestra el error
+    alert('Error en la conexión WebSocket: ' + error);  // Muestra un mensaje de alerta con el error
   };
 
   // Si la conexión se cierra
@@ -60,3 +60,4 @@ const ws = new WebSocket("wss://irc.chat.twitch.tv:443");
     margin-top: 20px; /* Para darle algo de espacio */
   }
 </style>
+
